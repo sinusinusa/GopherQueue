@@ -2,12 +2,13 @@ package httpserver
 
 import (
 	"context"
+	_ "embed"
 	"encoding/json"
 	"log"
 	"net/http"
 	"time"
 
-	"GopherQueue/Internal/Config"
+	"GopherQueue/internal/config"
 )
 
 type Server struct {
@@ -23,6 +24,7 @@ func New(cfg *config.Config) *Server {
 	// Go 1.22: метод-ориентированные роуты
 	mux.HandleFunc("GET /healthz", s.handleHealth)
 	mux.HandleFunc("GET /config", s.handleConfig)
+	mux.HandleFunc("GET /description", s.handleDescription)
 
 	s.httpServer = &http.Server{
 		Addr:         cfg.Server.Addr,
@@ -50,6 +52,14 @@ func (s *Server) Shutdown(ctx context.Context) error {
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte("ok"))
+}
+
+//go:embed description
+var description []byte
+
+func (s *Server) handleDescription(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	_, _ = w.Write(description)
 }
 
 func (s *Server) handleConfig(w http.ResponseWriter, r *http.Request) {

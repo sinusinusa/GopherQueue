@@ -1,0 +1,11 @@
+Welcome to Gopher Queue service
+
+This service provide availability to manage and scheduling tasks inline your architecture.
+
+Functionality:
+REST API to queue your task with JSON payload
+Start notBefore, retries, backoff.
+Working delivery (long‑polling), ack/fail и DLQ (dead‑letter).
+In‑memory backend, concurrent-safe.
+Graceful-shutdown, healthz, readiness.
+Metrics Prometheus (tasks count, duration).

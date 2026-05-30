@@ -1,8 +1,8 @@
 package main
 
 import (
-	config "GopherQueue/Internal/Config"
-	httpserver "GopherQueue/Internal/Http"
+	config "GopherQueue/internal/config"
+	httpserver "GopherQueue/internal/http"
 	"context"
 	"flag"
 	"log"
