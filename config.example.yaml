@@ -1,0 +1,31 @@
+server:
+  addr: ":8080"
+  read_timeout: 5s
+  write_timeout: 10s
+
+scheduler:
+  timezone: "Europe/Moscow"
+  workers: 4
+  default_timeout: 30s
+
+# Секреты доступны приложению, но не попадают в /config
+secrets:
+  db_password: "super-secret"
+  api_key: "abc123"
+
+tasks:
+  - id: "cleanup_temp"
+    cron: "*/15 * * * *"
+    command: "/usr/local/bin/cleanup.sh"
+    args: ["--dir", "/tmp"]
+    timeout: 1m
+    retries: 2
+    enabled: true
+
+  - id: "report_sync"
+    cron: "0 3 * * *"
+    command: "/usr/local/bin/report-sync"
+    args: []
+    # timeout не указан → возьмется scheduler.default_timeout
+    retries: 1
+    enabled: true
